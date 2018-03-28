@@ -10,6 +10,46 @@
 #define Img2Video_h
 using namespace cv;
 
+Mat Img2Img(Mat s,Mat t){
+    Mat source = s;
+    Mat target = t;
+    Mat sourcesplit[3];
+    Mat sourcemean,sourcestd;
+    Mat targetmean,targetstd;
+    double rstd,gstd,bstd;
+    double tstd[3];
+    int i,j,k,x;
+    
+    cvtColor(source,source,CV_BGR2Lab);
+    meanStdDev(source,sourcemean,sourcestd);
+    cvtColor(target,target,CV_BGR2Lab);
+    meanStdDev(target,targetmean,targetstd);
+        rstd = targetstd.at<double>(0,0)/sourcestd.at<double>(0,0);
+        gstd = targetstd.at<double>(1,0)/sourcestd.at<double>(1,0);
+        bstd = targetstd.at<double>(2,0)/sourcestd.at<double>(2,0);
+        tstd[0] = rstd;
+        tstd[1] = gstd;
+        tstd[2] = bstd;
+        for(i=0;i<target.rows;i++){
+            for(j=0;j< target.cols;j++){
+                for(k = 0; k < 3 ;k++){
+                    x = target.at<Vec3b>(i,j)[k];
+                    x = x - targetmean.at<double>(k,0);
+                    x = x * tstd[k];
+                    if(x + sourcemean.at<double>(k,0) > 255){
+                        target.at<Vec3b>(i,j)[k] = 255;
+                    }else if(x + sourcemean.at<double>(k,0) < 0){
+                        target.at<Vec3b>(i,j)[k] = 0;
+                    }else{
+                        target.at<Vec3b>(i,j)[k] = x + sourcemean.at<double>(k,0);
+                    }
+                }
+            }
+        }
+        cvtColor(target,target,CV_Lab2BGR);
+    return target;
+}
+
 void Img2Video(Mat s,VideoCapture t){
     Mat source = s;
     Mat target;

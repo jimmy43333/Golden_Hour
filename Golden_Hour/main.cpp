@@ -12,20 +12,77 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "vector"
-#include "Img2Video.h"
+#include "StyleConvert.hpp"
+#include "MergeImage.hpp"
 using namespace std;
 using namespace cv;
 
+string int2str(int&);
+
 int main(int argc, const char * argv[]) {
-    Mat source = imread("/Users/TGsung/Desktop/Traindata/11.jpg",1);
-    //Mat target = imread("/Users/TGsung/Desktop/00.jpg",1);
+    String Imgname;
+    Mat source;
     Mat target;
-    VideoCapture video = VideoCapture("/Users/TGsung/Desktop/Source.mp4");
+    Mat output;
+    VideoCapture video;
+    
+    //Image to image
+    //////////////////////////////////////////////////////
+    int num_G = 3;
+    int num_T = 9;
+    int i,j;
+    for(i=1;i<=num_G;i++){
+        for(j=1;j< num_T;j++){
+            Imgname = "TrainData/GoldenHour/G0"+ int2str(i) + ".jpg";
+            source = imread(Imgname,1);
+            Imgname = "TrainData/T0" + int2str(j) + ".jpg";
+            target = imread(Imgname,1);
+            output = Img2Img(source, target);
+            output = mergeImage(600,600,target,output);
+            Imgname = "Output/G0" + int2str(i) + "_" + "T0" + int2str(j) + ".jpg";
+            imwrite(Imgname, output);
+        }
+    }
+    ////////////////////////////////////////////////////*/
+    
+    /*/Image to Video
+    //////////////////////////////////////////////////////
+    Imgname = "TrainData/GoldenHour/G03.jpg";
+    video = VideoCapture("TrainData/Video/test01.mp4");
     if(!video.isOpened()){
         return -1;
     }
+    source = imread(Imgname,1);
     Img2Video(source,video);
-    //imwrite("/Users/TGsung/Desktop/Goal.jpg",target);
-    //Video2Img(video,source);
+    ////////////////////////////////////////////////////*/
+    
+    /*/Video to image
+    //////////////////////////////////////////////////////
+    Imgname = "Traindata/T03.jpg";
+    video = VideoCapture("TrainData/Video/test01.mp4");
+    if(!video.isOpened()){
+       return -1;
+     }
+    target = imread(Imgname,1);
+    Video2Img(video,target);
+    ////////////////////////////////////////////////////*/
+    
+    /*/mergeImage function test
+    //////////////////////////////////////////////////////
+    Mat f,s;
+    f = imread("Output/G01_T04.jpg");
+    s = imread("Output/G01_T05.jpg");
+    Mat merge = mergeImage(300,600,f,s);
+    imshow("Play",merge);
+    waitKey(0);
+    ////////////////////////////////////////////////////*/
+    
     return 0;
+}
+
+string int2str(int &i){
+    string s;
+    stringstream ss(s);
+    ss << i;
+    return ss.str();
 }
