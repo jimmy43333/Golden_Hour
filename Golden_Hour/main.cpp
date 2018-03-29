@@ -26,10 +26,10 @@ int main(int argc, const char * argv[]) {
     Mat output;
     VideoCapture video;
     
-    //Image to image
+    /*/Image to image
     //////////////////////////////////////////////////////
-    int num_G = 3;
-    int num_T = 9;
+    int num_G = 5;
+    int num_T = 7;
     int i,j;
     for(i=1;i<=num_G;i++){
         for(j=1;j< num_T;j++){
@@ -47,8 +47,8 @@ int main(int argc, const char * argv[]) {
     
     /*/Image to Video
     //////////////////////////////////////////////////////
-    Imgname = "TrainData/GoldenHour/G03.jpg";
-    video = VideoCapture("TrainData/Video/test01.mp4");
+    Imgname = "TrainData/02.jpg";
+    video = VideoCapture("TrainData/Video/test03.mp4");
     if(!video.isOpened()){
         return -1;
     }
@@ -56,10 +56,10 @@ int main(int argc, const char * argv[]) {
     Img2Video(source,video);
     ////////////////////////////////////////////////////*/
     
-    /*/Video to image
+    //Video to image
     //////////////////////////////////////////////////////
-    Imgname = "Traindata/T03.jpg";
-    video = VideoCapture("TrainData/Video/test01.mp4");
+    Imgname = "TrainData/T02.jpg";
+    video = VideoCapture("TrainData/Video/test03.mp4");
     if(!video.isOpened()){
        return -1;
      }
