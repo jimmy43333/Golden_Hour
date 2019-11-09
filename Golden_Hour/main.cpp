@@ -26,23 +26,25 @@ int main(int argc, const char * argv[]) {
     Mat output;
     VideoCapture video;
     
-    /*/Image to image
+    //Image to image
     //////////////////////////////////////////////////////
-    int num_G = 5;
-    int num_T = 7;
+    int num_G = 1;
+    int num_T = 1;
     int i,j;
-    for(i=1;i<=num_G;i++){
-        for(j=1;j< num_T;j++){
-            Imgname = "TrainData/GoldenHour/G0"+ int2str(i) + ".jpg";
+    //for(i=1;i<=num_G;i++){
+      //  for(j=1;j< num_T;j++){
+            Imgname = "TrainData/02.jpg";
             source = imread(Imgname,1);
-            Imgname = "TrainData/T0" + int2str(j) + ".jpg";
+            Imgname = "TrainData/T01.jpg";
             target = imread(Imgname,1);
             output = Img2Img(source, target);
-            output = mergeImage(600,600,target,output);
+            //imshow("Out",output);
+            //waitKey(0);
+            //output = mergeImage(600,600,target,output);
             Imgname = "Output/G0" + int2str(i) + "_" + "T0" + int2str(j) + ".jpg";
             imwrite(Imgname, output);
-        }
-    }
+      //  }
+    //}
     ////////////////////////////////////////////////////*/
     
     /*/Image to Video
@@ -56,7 +58,7 @@ int main(int argc, const char * argv[]) {
     Img2Video(source,video);
     ////////////////////////////////////////////////////*/
     
-    //Video to image
+    /*/Video to image
     //////////////////////////////////////////////////////
     Imgname = "TrainData/T02.jpg";
     video = VideoCapture("TrainData/Video/test03.mp4");
